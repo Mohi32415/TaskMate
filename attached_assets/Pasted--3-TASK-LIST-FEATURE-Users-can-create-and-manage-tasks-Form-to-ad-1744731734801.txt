@@ -1,0 +1,108 @@
+📝 3. TASK LIST FEATURE
+=======================
+- Users can create and manage tasks.
+- Form to add a task includes:
+   - Task title
+   - Type (dropdown): [Daily, Exercise, Study, Custom]
+   - Frequency (e.g., “10 pushups/day” or “Read 30 pages”)
+   - Optional note
+- Show task cards with:
+   - Title, type icon, progress bar, “+” button to update progress.
+   - Mark when goal is met.
+   - If progress > goal: Show “🔥 Amazing work!”
+   - If progress == goal: “✅ Great job, you did it!”
+   - If progress < goal: “📉 Try to do more tomorrow!”
+- Tasks saved per user.
+- Support Arabic and English text direction (RTL/LTR).
+
+=======================
+👥 4. CHALLENGES SYSTEM
+=======================
+- Create a challenge:
+   - Input: Challenge title, number of days (e.g., 10, 20, 30), type of task (e.g., 20 pushups/day), invite a friend by email or username.
+- Generate a **unique challenge invite link**:
+   - Example: “Join [username] for a 30-Day Push-up Challenge?”
+   - Invitee must **approve** to start challenge.
+- Each user can view:
+   - Active challenges
+   - Daily checklist
+   - Progress bars
+   - Friend status (“Day 5/30 done ✅”)
+- If one user completes daily task:
+   - Notify the other user: “🎉 [friend] finished today’s task!”
+- Add emoji reactions
+- “Leave challenge” button with confirmation modal.
+
+=======================
+💬 5. CHALLENGE CHAT
+=======================
+- Each challenge has a built-in chat box (inside the challenge view only).
+- Chat design:
+   - Messages in bubbles
+   - Timestamps
+   - Sender name
+   - Support emojis and short replies (“Great job!” button)
+- Real-time updates using Firebase Firestore.
+
+=======================
+⚙️ 6. SETTINGS PAGE
+=======================
+- Language selector: Arabic / English
+   - Toggle text direction (RTL for Arabic)
+- Dark Mode toggle
+- Notification toggle (for challenge progress)
+- Account section:
+   - Change password
+   - Update display name
+   - Logout button
+- About section: Show app info, version
+
+=======================
+🌐 7. NAVIGATION UI
+=======================
+- Top navbar or side menu:
+   - Dashboard
+   - Tasks
+   - Challenges
+   - Settings
+- Add active highlight
+- Responsive for mobile (hamburger menu)
+- Use icons (e.g., home, list, challenge, gear)
+
+=======================
+🎨 8. DESIGN STYLING
+=======================
+- Mobile-first layout with breakpoints
+- Font: Use "Poppins" or similar for English, “Tajawal” for Arabic
+- Rounded buttons, cards, and input fields
+- Use hover/press animations
+- Task and challenge cards should have color-coded borders/icons
+- Use soft shadows and a light pastel theme
+- Emojis and fun micro-animations when completing tasks
+- Use Firebase for saving tasks, users, and chat
+
+=======================
+🔥 9. TECH STACK & BEHAVIOR
+=======================
+- Vanilla JS or React (you choose what's better)
+- Use Firebase (modular v9):
+   - Auth (sign up, login)
+   - Firestore (tasks, challenges, chat)
+- Split code into reusable components if using React
+- Handle loading states and error messages
+- Show confirmation modals for critical actions (e.g., leave challenge)
+
+=======================
+💬 OPTIONAL EXTRAS
+=======================
+- “Motivation Generator” button: Shows random encouraging quotes from a list.
+- Weekly task stats summary
+- Option to make a public challenge for anyone to join
+- Display country flags next to users (optional)
+
+=======================
+🎯 GOAL
+=======================
+- Deliver a fully designed front-end that looks like a real app.
+- Use mock data or placeholder Firebase functions if needed.
+- Focus on layout, interactivity, and modern web style.

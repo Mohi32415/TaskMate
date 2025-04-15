@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+  }
+  
+  /* Dark mode enhanced styles */
+  .dark {
+    color-scheme: dark;
+  }
+  
+  /* RTL Support */
+  [dir="rtl"] .rtl-flip {
+    transform: scaleX(-1);
+  }
+  
+  [dir="rtl"] .ml-auto {
+    margin-left: initial;
+    margin-right: auto;
+  }
+  
+  [dir="rtl"] .mr-auto {
+    margin-right: initial;
+    margin-left: auto;
+  }
+  
+  [dir="rtl"] .ml-1, [dir="rtl"] .ml-2, [dir="rtl"] .ml-3, [dir="rtl"] .ml-4 {
+    margin-left: 0;
+    margin-right: 0.25rem;
+  }
+  
+  [dir="rtl"] .mr-1, [dir="rtl"] .mr-2, [dir="rtl"] .mr-3, [dir="rtl"] .mr-4 {
+    margin-right: 0;
+    margin-left: 0.25rem;
+  }
+}

@@ -1,0 +1,1042 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TasksMate 🔥</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Auth Section -->
+    <section id="authSection" class="auth-section">
+      <div class="auth-container">
+        <h1>🔥 TasksMate</h1>
+        <div class="auth-tabs">
+          <button class="tab-btn active" data-tab="login">Login</button>
+          <button class="tab-btn" data-tab="signup">Sign Up</button>
+        </div>
+        
+        <!-- Login Form -->
+        <form id="loginForm" class="auth-form">
+          <div class="input-group">
+            <span class="input-icon">📧</span>
+            <input type="email" placeholder="Email" required>
+          </div>
+          <div class="input-group">
+            <span class="input-icon">🔒</span>
+            <input type="password" placeholder="Password" required>
+            <button type="button" class="toggle-password">👁️</button>
+          </div>
+          <button type="submit" class="auth-button">
+            <span class="button-text">Login</span>
+            <span class="spinner hidden"></span>
+          </button>
+        </form>
+
+        <!-- Signup Form -->
+        <form id="signupForm" class="auth-form hidden">
+          <div class="input-group">
+            <span class="input-icon">👤</span>
+            <input type="text" placeholder="Username" required>
+          </div>
+          <div class="input-group">
+            <span class="input-icon">📧</span>
+            <input type="email" placeholder="Email" required>
+          </div>
+          <div class="input-group">
+            <span class="input-icon">🔒</span>
+            <input type="password" placeholder="Password" required>
+            <button type="button" class="toggle-password">👁️</button>
+          </div>
+          <button type="submit" class="auth-button">
+            <span class="button-text">Sign Up</span>
+            <span class="spinner hidden"></span>
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Dashboard Section (Hidden initially) -->
+    <section id="dashboardSection" class="dashboard-section hidden">
+      <!-- Will be populated by JavaScript -->
+    </section>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script type="module" src="script.js"></script>
+</body>
+</html>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', 'Tajawal', sans-serif;
+}
+
+:root {
+  --primary-color: #4a90e2;
+  --secondary-color: #f39c12;
+  --background-color: #f5f6fa;
+  --text-color: #2c3e50;
+  --error-color: #e74c3c;
+  --success-color: #2ecc71;
+}
+
+/* Dark mode variables */
+.dark-mode {
+  --background-color: #1a1a1a;
+  --text-color: #ffffff;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+/* RTL Support */
+[dir="rtl"] .input-icon {
+  left: auto;
+  right: 12px;
+}
+
+[dir="rtl"] .toggle-password {
+  right: auto;
+  left: 12px;
+}
+
+[dir="rtl"] .task-card {
+  text-align: right;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  min-height: 100vh;
+}
+
+#app {
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.auth-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.auth-container {
+  background: white;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.auth-container h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: var(--primary-color);
+  font-size: 2rem;
+}
+
+.auth-tabs {
+  display: flex;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #eee;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 0.75rem;
+  border: none;
+  background: none;
+  font-size: 1rem;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tab-btn.active {
+  color: var(--primary-color);
+  border-bottom: 2px solid var(--primary-color);
+  margin-bottom: -2px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 12px;
+  font-size: 1.2rem;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px 40px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.auth-button {
+  padding: 12px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth-button:hover {
+  background: #357abd;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid #ffffff;
+  border-top: 3px solid transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.hidden {
+  display: none;
+}
+
+/* Dashboard Styles */
+.dashboard-header {
+  padding: 2rem;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  padding: 2rem;
+}
+
+.stat-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.stat-icon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  display: block;
+}
+
+.dashboard-quote {
+  background: var(--primary-color);
+  color: white;
+  padding: 1rem;
+  text-align: center;
+  margin: 0 2rem;
+  border-radius: 10px;
+}
+
+.dashboard-nav {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: white;
+  margin: 2rem;
+  border-radius: 10px;
+}
+
+.nav-btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: var(--text-color);
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.nav-btn.active {
+  background: var(--primary-color);
+  color: white;
+}
+
+.dashboard-content {
+  padding: 2rem;
+}
+
+.content-section {
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.action-button {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 1rem 0;
+}
+
+.settings-form {
+  max-width: 400px;
+}
+
+.logout-button {
+  background: var(--error-color);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Task Styles */
+.task-form {
+  background: white;
+  padding: 1rem;
+  border-radius: 10px;
+  margin: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.task-form input,
+.task-form select,
+.task-form textarea {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.custom-days {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.5rem;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin: 0.5rem 0;
+}
+
+.custom-days.hidden {
+  display: none;
+}
+
+.custom-days label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.task-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin: 1rem 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  position: relative;
+}
+
+.task-card[dir="rtl"] {
+  text-align: right;
+}
+
+.progress-message {
+  margin: 0.5rem 0;
+  font-weight: 500;
+  color: var(--primary-color);
+}
+
+.progress-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+
+.progress-btn:hover {
+  transform: scale(1.1);
+}
+
+[dir="rtl"] .progress-btn {
+  right: auto;
+  left: 1rem;
+}
+
+.task-progress {
+  margin: 1rem 0;
+  height: 10px;
+  background: #eee;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.task-progress-bar {
+  height: 100%;
+  background: var(--primary-color);
+  transition: width 0.3s ease;
+}
+
+/* Settings Styles */
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.settings-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .toggle-slider {
+  background-color: var(--primary-color);
+}
+
+input:checked + .toggle-slider:before {
+  transform: translateX(26px);
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .auth-container {
+    padding: 1.5rem;
+  }
+  
+  .auth-container h1 {
+    font-size: 1.75rem;
+  }
+  
+  .input-group input {
+    padding: 10px 35px;
+  }
+  
+  .dashboard-header {
+    padding: 1rem;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+  
+  .dashboard-stats {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+  
+  .dashboard-nav {
+    flex-direction: column;
+    margin: 1rem;
+  }
+}// Import Firebase SDK
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, doc, setDoc, updateDoc, deleteDoc, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+
+// Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyARmfkjzy-h7Bv4NxUYtvOCG-JGU90rGok",
+  authDomain: "tasksmate.firebaseapp.com",
+  projectId: "tasksmate",
+  storageBucket: "tasksmate.firebasestorage.app",
+  messagingSenderId: "24880064371",
+  appId: "1:24880064371:web:3d723e72f398cde5d20706",
+  measurementId: "G-QM8FFC5SQ8"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth();
+const db = getFirestore();
+
+// DOM Elements
+const authTabs = document.querySelectorAll('.tab-btn');
+const loginForm = document.getElementById('loginForm');
+const signupForm = document.getElementById('signupForm');
+const togglePasswordBtns = document.querySelectorAll('.toggle-password');
+
+// Tab switching
+authTabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    const tabName = tab.dataset.tab;
+    authTabs.forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+
+    if (tabName === 'login') {
+      loginForm.classList.remove('hidden');
+      signupForm.classList.add('hidden');
+    } else {
+      loginForm.classList.add('hidden');
+      signupForm.classList.remove('hidden');
+    }
+  });
+});
+
+// Toggle password visibility
+togglePasswordBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const input = btn.parentElement.querySelector('input');
+    if (input.type === 'password') {
+      input.type = 'text';
+      btn.textContent = '🔒';
+    } else {
+      input.type = 'password';
+      btn.textContent = '👁️';
+    }
+  });
+});
+
+// Login form submission
+loginForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = loginForm.querySelector('input[type="email"]').value;
+  const password = loginForm.querySelector('input[type="password"]').value;
+  const button = loginForm.querySelector('.auth-button');
+  const spinner = button.querySelector('.spinner');
+  const buttonText = button.querySelector('.button-text');
+
+  try {
+    buttonText.classList.add('hidden');
+    spinner.classList.remove('hidden');
+
+    await signInWithEmailAndPassword(auth, email, password);
+    // Redirect to dashboard (to be implemented)
+    console.log('Logged in successfully!');
+  } catch (error) {
+    console.error('Login error:', error);
+    alert(error.message);
+  } finally {
+    buttonText.classList.remove('hidden');
+    spinner.classList.add('hidden');
+  }
+});
+
+// Signup form submission
+signupForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const username = signupForm.querySelector('input[type="text"]').value;
+  const email = signupForm.querySelector('input[type="email"]').value;
+  const password = signupForm.querySelector('input[type="password"]').value;
+  const button = signupForm.querySelector('.auth-button');
+  const spinner = button.querySelector('.spinner');
+  const buttonText = button.querySelector('.button-text');
+
+  try {
+    buttonText.classList.add('hidden');
+    spinner.classList.remove('hidden');
+
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    await updateProfile(userCredential.user, { displayName: username });
+
+    // Save user data to Firestore
+    await setDoc(doc(db, 'users', userCredential.user.uid), {
+      username,
+      email,
+      createdAt: new Date(),
+      stats: {
+        totalTasks: 0,
+        completedTasks: 0,
+        ongoingChallenges: 0
+      }
+    });
+
+    showDashboard(userCredential.user);
+  } catch (error) {
+    console.error('Signup error:', error);
+    alert(error.message);
+  } finally {
+    buttonText.classList.remove('hidden');
+    spinner.classList.add('hidden');
+  }
+});
+
+// Show dashboard after successful auth
+async function loadTasks() {
+  const tasksList = document.getElementById('tasksList');
+  const q = query(collection(db, 'tasks'), where('userId', '==', auth.currentUser.uid));
+
+  onSnapshot(q, (snapshot) => {
+    tasksList.innerHTML = '';
+    snapshot.forEach((doc) => {
+      const task = doc.data();
+      const progressPercent = (task.progress / parseInt(task.frequency)) * 100;
+
+      const taskCard = `
+        <div class="task-card">
+          <h3>${task.title}</h3>
+          <p>${task.type} - ${task.frequency}</p>
+          ${task.note ? `<p class="task-note">${task.note}</p>` : ''}
+          <div class="task-progress">
+            <div class="task-progress-bar" style="width: ${progressPercent}%"></div>
+          </div>
+          <button onclick="updateTaskProgress('${doc.id}', ${task.progress + 1})">+</button>
+        </div>
+      `;
+      tasksList.insertAdjacentHTML('beforeend', taskCard);
+    });
+  });
+}
+
+function showDashboard(user) {
+  const authSection = document.getElementById('authSection');
+  const dashboardSection = document.getElementById('dashboardSection');
+
+  authSection.classList.add('hidden');
+  dashboardSection.classList.remove('hidden');
+
+  // Initialize dashboard
+  dashboardSection.innerHTML = `
+    <header class="dashboard-header">
+      <h1>Welcome back, ${user.displayName}! 👋</h1>
+      <button id="logoutBtn" class="logout-button">Logout</button>
+    </header>
+
+    <div class="dashboard-stats">
+      <div class="stat-card">
+        <span class="stat-icon">📝</span>
+        <span class="stat-value">0</span>
+        <span class="stat-label">Total Tasks</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">✅</span>
+        <span class="stat-value">0</span>
+        <span class="stat-label">Completed</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">🏃</span>
+        <span class="stat-value">0</span>
+        <span class="stat-label">Ongoing Challenges</span>
+      </div>
+    </div>
+
+    <div class="dashboard-quote">
+      <p>You're doing great! Keep pushing 💪</p>
+    </div>
+
+    <nav class="dashboard-nav">
+      <button data-section="tasks" class="nav-btn active">Tasks</button>
+      <button data-section="challenges" class="nav-btn">Challenges</button>
+      <button data-section="settings" class="nav-btn">Settings</button>
+    </nav>
+
+    <main class="dashboard-content">
+      <section id="tasksSection" class="content-section">
+        <h2>My Tasks</h2>
+        <button id="addTaskBtn" class="action-button">+ New Task</button>
+        <div id="tasksList" class="tasks-list"></div>
+      </section>
+
+      <section id="challengesSection" class="content-section hidden">
+        <h2>Challenges</h2>
+        <button id="createChallengeBtn" class="action-button">+ New Challenge</button>
+        <div id="challengesList" class="challenges-list"></div>
+      </section>
+
+      <section id="settingsSection" class="content-section hidden">
+        <h2>Settings</h2>
+        <form id="settingsForm" class="settings-form">
+          <div class="settings-group">
+            <label>Language</label>
+            <select name="language">
+              <option value="en">English</option>
+              <option value="ar">العربية</option>
+            </select>
+          </div>
+          <div class="settings-group">
+            <label>Dark Mode</label>
+            <label class="toggle-switch">
+              <input type="checkbox" name="darkMode">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="settings-group">
+            <label>Notifications</label>
+            <label class="toggle-switch">
+              <input type="checkbox" name="notifications">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="input-group">
+            <label>Username</label>
+            <input type="text" name="username" value="${user.displayName}" />
+          </div>
+          <div class="input-group">
+            <label>Email</label>
+            <input type="email" value="${user.email}" disabled />
+          </div>
+          <button type="submit" class="auth-button">Save Changes</button>
+        </form>
+      </section>
+    </main>
+  `;
+
+  // Initialize dashboard event listeners
+  initializeDashboardEvents();
+}
+
+// Initialize dashboard event listeners
+// Task Management Functions
+async function createTask(userId, taskData) {
+  try {
+    if (!auth.currentUser) {
+      alert('Please login first');
+      return false;
+    }
+    const tasksRef = collection(db, 'tasks');
+    const task = {
+      userId: auth.currentUser.uid,
+      title: taskData.title,
+      type: taskData.type,
+      frequency: taskData.frequency,
+      note: taskData.note,
+      progress: 0,
+      completed: false,
+      createdAt: new Date(),
+    };
+    await addDoc(tasksRef, task);
+    return true;
+  } catch (error) {
+    console.error('Error creating task:', error);
+    alert('Failed to create task. Please try again.');
+    return false;
+  }
+}
+
+async function updateTaskProgress(taskId, progress) {
+  try {
+    const taskRef = doc(db, 'tasks', taskId);
+    await updateDoc(taskRef, { progress });
+    return true;
+  } catch (error) {
+    console.error('Error updating task:', error);
+    return false;
+  }
+}
+
+// Challenge Management Functions
+async function createChallenge(creatorId, challengeData) {
+  try {
+    const challengesRef = collection(db, 'challenges');
+    const challenge = {
+      creatorId,
+      title: challengeData.title,
+      days: challengeData.days,
+      type: challengeData.type,
+      inviteeEmail: challengeData.inviteeEmail,
+      status: 'pending',
+      progress: {},
+      createdAt: new Date(),
+    };
+    const docRef = await addDoc(challengesRef, challenge);
+    return docRef.id;
+  } catch (error) {
+    console.error('Error creating challenge:', error);
+    return null;
+  }
+}
+
+async function acceptChallenge(challengeId, userId) {
+  try {
+    const challengeRef = doc(db, 'challenges', challengeId);
+    await updateDoc(challengeRef, {
+      status: 'active',
+      [`participants.${userId}`]: {
+        joined: new Date(),
+        progress: 0
+      }
+    });
+    return true;
+  } catch (error) {
+    console.error('Error accepting challenge:', error);
+    return false;
+  }
+}
+
+// Settings Management
+async function updateUserSettings(userId, settings) {
+  try {
+    if (!auth.currentUser) {
+      alert('Please login first');
+      return false;
+    }
+    const userRef = doc(db, 'users', auth.currentUser.uid);
+    await updateDoc(userRef, {
+      settings: {
+        language: settings.language,
+        darkMode: settings.darkMode,
+        notifications: settings.notifications
+      }
+    });
+
+    // Apply dark mode
+    if (settings.darkMode) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+
+    // Apply language
+    document.documentElement.lang = settings.language;
+    document.documentElement.dir = settings.language === 'ar' ? 'rtl' : 'ltr';
+
+    // Handle notifications
+    if (settings.notifications && "Notification" in window) {
+      Notification.requestPermission();
+    }
+
+    return true;
+  } catch (error) {
+    console.error('Error updating settings:', error);
+    return false;
+  }
+}
+
+function initializeDashboardEvents() {
+  const navButtons = document.querySelectorAll('.nav-btn');
+  const sections = document.querySelectorAll('.content-section');
+
+  navButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const sectionName = btn.dataset.section;
+
+      // Update active button
+      navButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      // Show selected section
+      sections.forEach(section => {
+        section.classList.add('hidden');
+        if (section.id === `${sectionName}Section`) {
+          section.classList.remove('hidden');
+        }
+      });
+    });
+  });
+
+  // Task form handling
+  const addTaskBtn = document.getElementById('addTaskBtn');
+  const tasksList = document.getElementById('tasksList');
+
+  if (addTaskBtn) {
+    addTaskBtn.addEventListener('click', () => {
+      const taskForm = `
+        <form id="newTaskForm" class="task-form" dir="auto">
+          <input type="text" name="title" placeholder="Task Title" required>
+          <select name="type" required>
+            <option value="daily">📅 Daily</option>
+            <option value="exercise">💪 Exercise</option>
+            <option value="study">📚 Study</option>
+            <option value="custom">✨ Custom</option>
+          </select>
+          <select name="repeat" required>
+            <option value="daily">Every Day</option>
+            <option value="custom">Custom Days</option>
+          </select>
+          <div id="customDays" class="custom-days hidden">
+            <label><input type="checkbox" name="days" value="sun"> Sunday</label>
+            <label><input type="checkbox" name="days" value="mon"> Monday</label>
+            <label><input type="checkbox" name="days" value="tue"> Tuesday</label>
+            <label><input type="checkbox" name="days" value="wed"> Wednesday</label>
+            <label><input type="checkbox" name="days" value="thu"> Thursday</label>
+            <label><input type="checkbox" name="days" value="fri"> Friday</label>
+            <label><input type="checkbox" name="days" value="sat"> Saturday</label>
+          </div>
+          <input type="text" name="frequency" placeholder="Frequency (e.g., 10 pushups/day)" required>
+          <textarea name="note" placeholder="Optional note"></textarea>
+          <button type="submit">Create Task</button>
+        </form>
+      `;
+      tasksList.insertAdjacentHTML('beforebegin', taskForm);
+
+      const form = document.getElementById('newTaskForm');
+      form.querySelector('[name="repeat"]').addEventListener('change', (e) => {
+        const customDays = document.getElementById('customDays');
+        customDays.classList.toggle('hidden', e.target.value !== 'custom');
+      });
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const repeat = formData.get('repeat');
+        const days = repeat === 'custom' 
+          ? Array.from(formData.getAll('days'))
+          : ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+
+        const taskData = {
+          title: formData.get('title'),
+          type: formData.get('type'),
+          frequency: formData.get('frequency'),
+          note: formData.get('note'),
+          repeat,
+          days,
+          createdAt: new Date(),
+          userId: auth.currentUser.uid
+        };
+
+        if (await createTask(auth.currentUser.uid, taskData)) {
+          e.target.remove();
+          loadTasks();
+        }
+      });
+    });
+  }
+
+  // Settings form handling
+  const settingsForm = document.getElementById('settingsForm');
+  if (settingsForm) {
+    settingsForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!auth.currentUser) {
+        alert('Please login first');
+        return;
+      }
+      const usernameInput = settingsForm.querySelector('[name="username"]');
+      const settings = {
+        language: settingsForm.querySelector('[name="language"]').value,
+        darkMode: settingsForm.querySelector('[name="darkMode"]').checked,
+        notifications: settingsForm.querySelector('[name="notifications"]').checked,
+        username: usernameInput ? usernameInput.value : auth.currentUser.displayName
+      };
+
+      if (await updateUserSettings(auth.currentUser.uid, settings)) {
+        alert('Settings updated successfully!');
+      }
+    });
+  }
+
+  // Add logout functionality
+  const logoutBtn = document.getElementById('logoutBtn');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+      auth.signOut().then(() => {
+        window.location.reload();
+      });
+    });
+  }
+}
+
+// Auth state observer
+auth.onAuthStateChanged((user) => {
+  if (user) {
+    showDashboard(user);
+  } else {
+    const authSection = document.getElementById('authSection');
+    const dashboardSection = document.getElementById('dashboardSection');
+
+    authSection.classList.remove('hidden');
+    dashboardSection.classList.add('hidden');
+  }
+}); correct every thing and connect it in sign up and login with fire bass 
+
